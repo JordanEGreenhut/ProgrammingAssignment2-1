@@ -1,15 +1,32 @@
-## Put comments here that give an overall description of what your
-## functions do
-
-## Write a short comment describing this function
-
-makeCacheMatrix <- function(x = matrix()) {
-
+#this function makes the matrix
+makeMatrix <- function(x=matrix()) {
+  #must be null for $ operators... i think
+  m <- NULL
+  set <- function(y) {
+    #SUPERassignment supercedes environment 
+    x <<- y
+    #must be null for $ operators... i think
+    m <<- NULL
+  }
+  get <- function() {x}
+  setInv <- function(inv) {(m <<- inv)} 
+  getInv <- function() {m}
+  #list syntax e.g. x=1, y=2,...
+  list(set = set, get = get,
+       setInv = setInv,
+       getInv = getInv)
 }
-
-
-## Write a short comment describing this function
-
-cacheSolve <- function(x, ...) {
-        ## Return a matrix that is the inverse of 'x'
+cacheInverse <- function(x, ...) {
+  #superassings inv to m
+  m <- x$getInv()
+  if(!is.null(m)) {
+    message("getting cached data")
+    return(m)
+  }
+  #gets m
+  data <- x$get()
+  m <- solve(data, ...)
+  x$setInv(m)
+  #gets m for value
+  m
 }
